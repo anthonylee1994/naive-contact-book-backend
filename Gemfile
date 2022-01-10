@@ -36,6 +36,8 @@ gem 'bootsnap', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+gem 'annotate', '~> 2.6'
+gem 'pry-rails', '~> 0.3.9'
 gem 'rswag', git: 'https://github.com/rswag/rswag.git', branch: 'master'
 gem 'rswag-api'
 gem 'rswag-ui'
@@ -51,7 +53,3 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
-
-gem "pry-rails", "~> 0.3.9"
-
-gem "annotate", "~> 2.6"
