@@ -3,7 +3,7 @@ require 'swagger_helper'
 describe 'Users API' do
   let(:anthony) { User.create!(name: 'Anthony') }
 
-  path '/sign-up' do
+  path '/sign_up' do
     post 'Sign up' do
       consumes 'application/json'
 
@@ -37,7 +37,7 @@ describe 'Users API' do
     end
   end
 
-  path '/sign-in' do
+  path '/sign_in' do
     post 'Sign in' do
       consumes 'application/json'
       security [Bearer: {}]
@@ -51,6 +51,65 @@ describe 'Users API' do
           data = JSON.parse(response.body)
           expect(data['name']).to eq 'Anthony'
           expect(data['secret']).to eq anthony.secret
+        end
+      end
+    end
+  end
+
+  path '/me' do
+    get 'Show current user' do
+      consumes 'application/json'
+      security [Bearer: {}]
+
+      response '200', 'get current user' do
+        let(:Authorization) do
+          "Bearer #{anthony.secret}"
+        end
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data['name']).to eq 'Anthony'
+          expect(data['secret']).to eq anthony.secret
+        end
+      end
+    end
+
+    put 'Update user' do
+      consumes 'application/json'
+      security [Bearer: {}]
+
+      parameter name: :user_info, in: :body, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string }
+        },
+        required: %w[name]
+      }
+
+      response '204', 'update user info' do
+        let(:Authorization) do
+          "Bearer #{anthony.secret}"
+        end
+
+        let(:user_info) { { name: 'Tom' } }
+
+        run_test! do |_response|
+          expect(anthony.reload.name).to eq 'Tom'
+        end
+      end
+    end
+
+    delete 'Delete current user' do
+      consumes 'application/json'
+      security [Bearer: {}]
+
+      response '204', 'delete current user' do
+        let(:Authorization) do
+          "Bearer #{anthony.secret}"
+        end
+
+        run_test! do |_response|
+          expect(User.exists?(anthony.id)).to be false
         end
       end
     end

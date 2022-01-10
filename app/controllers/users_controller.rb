@@ -1,20 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[sign_in]
-  skip_before_action :authorize_request, only: :sign_up
+  skip_before_action :authorize_request, only: %i[sign_up]
 
-  # # GET /users
-  # def index
-  #   @users = User.all
-
-  #   render json: @users
-  # end
-
-  # # GET /users/1
-  # def show
-  #   render json: @user
-  # end
-
-  # POST /users
+  # POST /sign_up
   def sign_up
     @user = User.new(user_params)
 
@@ -25,30 +12,31 @@ class UsersController < ApplicationController
     end
   end
 
+  # POST /sign_in
   def sign_in
-    render json: @user
+    render json: current_user
+  end
+
+  # GET /me
+  def show
+    render json: current_user
   end
 
   # # PATCH/PUT /users/1
-  # def update
-  #   if @user.update(user_params)
-  #     render json: @user
-  #   else
-  #     render json: @user.errors, status: :unprocessable_entity
-  #   end
-  # end
+  def update
+    if current_user.update(user_params)
+      head :no_content
+    else
+      render json: current_user.errors, status: :unprocessable_entity
+    end
+  end
 
-  # # DELETE /users/1
-  # def destroy
-  #   @user.destroy
-  # end
+  # DELETE /users/1
+  def destroy
+    current_user.destroy
+  end
 
   private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_user
-    @user = User.find_by(params[:secret])
-  end
 
   # Only allow a list of trusted parameters through.
   def user_params
