@@ -22,12 +22,14 @@ RSpec.configure do |config|
         version: 'v1'
       },
       paths: {},
-      securityDefinitions: {
-        Bearer: {
-          description: 'token',
-          type: :apiKey,
-          name: 'Authorization',
-          in: :header
+      components: {
+        securitySchemes: {
+          Bearer: {
+            description: 'token',
+            type: :apiKey,
+            name: 'Authorization',
+            in: :header
+          }
         }
       },
       servers: [
