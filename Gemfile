@@ -37,6 +37,7 @@ gem 'image_processing', '~> 1.2'
 gem 'rack-cors'
 
 gem 'annotate', '~> 2.6'
+gem 'aws-sdk-s3', '~> 1.111'
 gem 'pry-rails', '~> 0.3.9'
 gem 'rspec-rails'
 gem 'rswag', git: 'https://github.com/rswag/rswag.git', branch: 'master'
