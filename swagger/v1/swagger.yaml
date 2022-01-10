@@ -1,0 +1,42 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/sign-up":
+    post:
+      summary: Sign up
+      parameters: []
+      responses:
+        '201':
+          description: user created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+  "/sign-in":
+    post:
+      summary: Sign in
+      security:
+      - Bearer: {}
+      responses:
+        '200':
+          description: sign in
+securityDefinitions:
+  Bearer:
+    description: token
+    type: apiKey
+    name: Authorization
+    in: header
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
