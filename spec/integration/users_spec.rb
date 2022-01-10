@@ -2,6 +2,7 @@ require 'swagger_helper'
 
 describe 'Users API' do
   let(:anthony) { User.create!(name: 'Anthony') }
+  let(:avatar_image) { fixture_file_upload('avatar.jpg', 'image/jpeg') }
 
   path '/sign_up' do
     post 'Sign up' do
@@ -95,6 +96,73 @@ describe 'Users API' do
 
         run_test! do |_response|
           expect(anthony.reload.name).to eq 'Tom'
+        end
+      end
+    end
+
+    put 'Add user avatar' do
+      consumes 'multipart/form-data'
+      security [Bearer: {}]
+
+      parameter name: :'_avatar_attributes[file]', in: :formData, type: :file
+
+      response '204', 'update user info' do
+        let(:Authorization) do
+          "Bearer #{anthony.secret}"
+        end
+
+        let(:'_avatar_attributes[file]') { avatar_image }
+
+        run_test! do |_response|
+          expect(anthony.reload.avatar.reload.blob.filename.to_s).to eq 'avatar.jpg'
+        end
+      end
+    end
+
+    put 'Update user avatar' do
+      consumes 'multipart/form-data'
+      security [Bearer: {}]
+
+      parameter name: :'_avatar_attributes[file]', in: :formData, type: :file
+
+      response '204', 'update user info' do
+        let(:user) do
+          anthony.update!(_avatar_attributes: { 'file' => fixture_file_upload('xxx.jpg', 'image/jpeg') })
+          anthony
+        end
+
+        let(:Authorization) do
+          "Bearer #{user.secret}"
+        end
+
+        let(:'_avatar_attributes[file]') { avatar_image }
+
+        run_test! do |_response|
+          expect(anthony.reload.avatar.reload.blob.filename.to_s).to eq 'avatar.jpg'
+        end
+      end
+    end
+
+    put 'Delete user avatar' do
+      consumes 'multipart/form-data'
+      security [Bearer: {}]
+
+      parameter name: :'_avatar_attributes[purge]', in: :formData, type: :boolean
+
+      response '204', 'update user info' do
+        let(:user) do
+          anthony.update!(_avatar_attributes: { 'file' => fixture_file_upload('xxx.jpg', 'image/jpeg') })
+          anthony
+        end
+
+        let(:Authorization) do
+          "Bearer #{user.secret}"
+        end
+
+        let(:'_avatar_attributes[purge]') { true }
+
+        run_test! do |_response|
+          expect(anthony.reload.avatar.attached?).to be false
         end
       end
     end

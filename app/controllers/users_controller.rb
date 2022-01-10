@@ -40,6 +40,9 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.permit(:name)
+    params.permit(
+      :name,
+      _avatar_attributes: %i[purge file]
+    )
   end
 end
