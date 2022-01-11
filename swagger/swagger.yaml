@@ -1,0 +1,151 @@
+---
+openapi: 3.0.1
+info:
+  title: Naive Contact Book API
+paths:
+  "/sign_up":
+    post:
+      summary: Sign up
+      parameters: []
+      responses:
+        '201':
+          description: user created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+                  avatar_url:
+                    type: string
+                    format: uri
+                    nullable: true
+                  secret:
+                    type: string
+                required:
+                - name
+                - created_at
+                - updated_at
+                - secret
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: User Name
+                _avatar_attributes[file]:
+                  type: file
+                  description: Avatar File
+              required:
+              - name
+  "/sign_in":
+    post:
+      summary: Sign in
+      security:
+      - Bearer: {}
+      responses:
+        '200':
+          description: sign in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+                  avatar_url:
+                    type: string
+                    format: uri
+                    nullable: true
+                  secret:
+                    type: string
+                required:
+                - name
+                - created_at
+                - updated_at
+                - secret
+  "/me":
+    get:
+      summary: Show current user
+      security:
+      - Bearer: {}
+      responses:
+        '200':
+          description: get current user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+                  avatar_url:
+                    type: string
+                    format: uri
+                    nullable: true
+                  secret:
+                    type: string
+                required:
+                - name
+                - created_at
+                - updated_at
+                - secret
+    put:
+      summary: Update user
+      security:
+      - Bearer: {}
+      parameters: []
+      responses:
+        '204':
+          description: update user info
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: User Name
+                _avatar_attributes[file]:
+                  type: file
+                  description: Avatar File
+                _avatar_attributes[purge]:
+                  type: boolean
+                  description: Purge Avatar?
+    delete:
+      summary: Delete current user
+      security:
+      - Bearer: {}
+      responses:
+        '204':
+          description: delete current user
+components:
+  securitySchemes:
+    Bearer:
+      description: token
+      type: apiKey
+      name: Authorization
+      in: header

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
+  mount Rswag::Ui::Engine => '/api-docs'
 
   root 'home#index'
   post '/sign_up', to: 'users#sign_up'

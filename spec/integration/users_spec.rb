@@ -7,13 +7,29 @@ describe 'Users API' do
   path '/sign_up' do
     post 'Sign up' do
       consumes 'multipart/form-data'
+      produces 'application/json'
 
-      parameter name: :name, in: :formData, type: :string, required: true
-      parameter name: :'_avatar_attributes[file]', in: :formData, type: :file, required: false
+      parameter name: :data, in: :formData, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string, description: 'User Name' },
+          '_avatar_attributes[file]': { type: :file, description: 'Avatar File' }
+        },
+        required: %w[name]
+      }
 
       response '201', 'user created' do
-        let(:name) { 'Anthony' }
-        let(:'_avatar_attributes[file]') { avatar_image }
+        let(:data) { { name: 'Anthony', '_avatar_attributes[file]': avatar_image } }
+
+        schema type: :object,
+               properties: {
+                 name: { type: :string },
+                 created_at: { type: :string, format: :date_time },
+                 updated_at: { type: :string, format: :date_time },
+                 avatar_url: { type: :string, format: :uri, nullable: true },
+                 secret: { type: :string }
+               },
+               required: %w[name created_at updated_at secret]
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -24,12 +40,13 @@ describe 'Users API' do
       end
 
       response '422', 'user should create with name', document: false do
-        let(:name) { nil }
+        let(:data) { { name: nil } }
+
         run_test!
       end
 
       response '422', 'user should create with non-blank name', document: false do
-        let(:name) { '' }
+        let(:data) { { name: '' } }
         run_test!
       end
     end
@@ -38,12 +55,24 @@ describe 'Users API' do
   path '/sign_in' do
     post 'Sign in' do
       consumes 'application/json'
+      produces 'application/json'
+
       security [Bearer: {}]
 
       response '200', 'sign in' do
         let(:Authorization) do
           "Bearer #{anthony.secret}"
         end
+
+        schema type: :object,
+               properties: {
+                 name: { type: :string },
+                 created_at: { type: :string, format: :date_time },
+                 updated_at: { type: :string, format: :date_time },
+                 avatar_url: { type: :string, format: :uri, nullable: true },
+                 secret: { type: :string }
+               },
+               required: %w[name created_at updated_at secret]
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -57,12 +86,24 @@ describe 'Users API' do
   path '/me' do
     get 'Show current user' do
       consumes 'application/json'
+      produces 'application/json'
+
       security [Bearer: {}]
 
       response '200', 'get current user' do
         let(:Authorization) do
           "Bearer #{anthony.secret}"
         end
+
+        schema type: :object,
+               properties: {
+                 name: { type: :string },
+                 created_at: { type: :string, format: :date_time },
+                 updated_at: { type: :string, format: :date_time },
+                 avatar_url: { type: :string, format: :uri, nullable: true },
+                 secret: { type: :string }
+               },
+               required: %w[name created_at updated_at secret]
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -74,18 +115,25 @@ describe 'Users API' do
 
     put 'Update user' do
       consumes 'multipart/form-data'
+      produces 'application/json'
+
       security [Bearer: {}]
 
-      parameter name: :name, in: :formData, type: :string, required: false
-      parameter name: :'_avatar_attributes[file]', in: :formData, type: :file, required: false
-      parameter name: :'_avatar_attributes[purge]', in: :formData, type: :boolean, required: false
+      parameter name: :data, in: :formData, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string, description: 'User Name' },
+          '_avatar_attributes[file]': { type: :file, description: 'Avatar File' },
+          '_avatar_attributes[purge]': { type: :boolean, description: 'Purge Avatar?' }
+        }
+      }
 
       response '204', 'update user info' do
         let(:Authorization) do
           "Bearer #{anthony.secret}"
         end
 
-        let(:name) { 'Tom' }
+        let(:data) { { name: 'Tom' } }
 
         run_test! do |_response|
           expect(anthony.reload.name).to eq 'Tom'
@@ -95,16 +143,25 @@ describe 'Users API' do
 
     put 'Add user avatar' do
       consumes 'multipart/form-data'
+      produces 'application/json'
+
       security [Bearer: {}]
 
-      parameter name: :'_avatar_attributes[file]', in: :formData, type: :file
+      parameter name: :data, in: :formData, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string, description: 'User Name' },
+          '_avatar_attributes[file]': { type: :file, description: 'Avatar File' },
+          '_avatar_attributes[purge]': { type: :boolean, description: 'Purge Avatar?' }
+        }
+      }
 
       response '204', 'update user info', document: false do
         let(:Authorization) do
           "Bearer #{anthony.secret}"
         end
 
-        let(:'_avatar_attributes[file]') { avatar_image }
+        let(:data) { { '_avatar_attributes[file]': avatar_image } }
 
         run_test! do |_response|
           expect(anthony.reload.avatar.reload.blob.filename.to_s).to eq 'avatar.jpg'
@@ -114,9 +171,18 @@ describe 'Users API' do
 
     put 'Update user avatar' do
       consumes 'multipart/form-data'
+      produces 'application/json'
+
       security [Bearer: {}]
 
-      parameter name: :'_avatar_attributes[file]', in: :formData, type: :file
+      parameter name: :data, in: :formData, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string, description: 'User Name' },
+          '_avatar_attributes[file]': { type: :file, description: 'Avatar File' },
+          '_avatar_attributes[purge]': { type: :boolean, description: 'Purge Avatar?' }
+        }
+      }
 
       response '204', 'update user info', document: false do
         let(:user) do
@@ -128,7 +194,7 @@ describe 'Users API' do
           "Bearer #{user.secret}"
         end
 
-        let(:'_avatar_attributes[file]') { avatar_image }
+        let(:data) { { '_avatar_attributes[file]': avatar_image } }
 
         run_test! do |_response|
           expect(anthony.reload.avatar.reload.blob.filename.to_s).to eq 'avatar.jpg'
@@ -138,9 +204,19 @@ describe 'Users API' do
 
     put 'Delete user avatar' do
       consumes 'multipart/form-data'
+      produces 'application/json'
+
       security [Bearer: {}]
 
-      parameter name: :'_avatar_attributes[purge]', in: :formData, type: :boolean
+      parameter name: :data, in: :formData, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string, description: 'User Name' },
+          '_avatar_attributes[file]': { type: :file, description: 'Avatar File' },
+          '_avatar_attributes[purge]': { type: :boolean, description: 'Purge Avatar?' }
+        },
+        required: %w[name]
+      }
 
       response '204', 'update user info', document: false do
         let(:user) do
@@ -152,7 +228,7 @@ describe 'Users API' do
           "Bearer #{user.secret}"
         end
 
-        let(:'_avatar_attributes[purge]') { true }
+        let(:data) { { '_avatar_attributes[purge]': true } }
 
         run_test! do |_response|
           expect(anthony.reload.avatar.attached?).to be false
@@ -162,6 +238,8 @@ describe 'Users API' do
 
     delete 'Delete current user' do
       consumes 'application/json'
+      produces 'application/json'
+
       security [Bearer: {}]
 
       response '204', 'delete current user' do
