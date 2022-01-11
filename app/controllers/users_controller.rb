@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   # # PATCH/PUT /users/1
   def update
     if current_user.update(user_params)
-      head :no_content
+      render json: current_user, show_secret: true, include: '*.*.*'
     else
       render json: current_user.errors, status: :unprocessable_entity
     end
@@ -42,7 +42,20 @@ class UsersController < ApplicationController
   def user_params
     params.permit(
       :name,
-      _avatar_attributes: %i[purge file]
+      _avatar_attributes: %i[purge file],
+      user_contacts_attributes: [
+        :id,
+        :display_order,
+        :contact_type,
+        :_destroy,
+        {
+          contact_attributes: %i[
+            phone_number
+            username
+            address
+          ]
+        }
+      ]
     )
   end
 end

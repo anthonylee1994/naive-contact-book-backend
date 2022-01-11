@@ -36,10 +36,12 @@ gem 'image_processing', '~> 1.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+gem 'active_model_otp'
 gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers.git', branch: '0-10-stable'
 gem 'annotate', '~> 2.6'
 gem 'aws-sdk-s3', '~> 1.111'
 gem 'pry-rails', '~> 0.3.9'
+gem 'ransack', '~> 2.5'
 gem 'rspec-rails'
 gem 'rswag', git: 'https://github.com/rswag/rswag.git', branch: 'master'
 gem 'rswag-api'

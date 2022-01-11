@@ -18,7 +18,8 @@ RSpec.configure do |config|
     'swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'Naive Contact Book API'
+        title: 'Naive Contact Book API',
+        version: 'v1'
       },
       paths: {},
       components: {

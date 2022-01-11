@@ -2,7 +2,469 @@
 openapi: 3.0.1
 info:
   title: Naive Contact Book API
+  version: v1
 paths:
+  "/update_contacts":
+    put:
+      summary: Update Contacts
+      security:
+      - Bearer: {}
+      parameters: []
+      responses:
+        '200':
+          description: updated contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_contacts_attributes:
+                  nullable: true
+                  type: array
+                  description: User Contact
+                  items:
+                    properties:
+                      id:
+                        type: integer
+                        description: User Contact ID
+                        nullable: true
+                      contact_type:
+                        type: string
+                        description: Contact Type
+                      _destroy:
+                        type: boolean
+                        description: Delete?
+                        nullable: true
+                      contact_attributes:
+                        type: object
+                        oneOf:
+                        - type: object
+                          description: WhatsApp Contact
+                          properties:
+                            phone_number:
+                              type: string
+                        - type: object
+                          description: Telegram Contact
+                          properties:
+                            username:
+                              type: string
+                        - type: object
+                          description: Address Contact
+                          properties:
+                            address:
+                              type: string
+              required:
+              - user_contacts_attributes
+  "/friendships":
+    post:
+      summary: Create friendship
+      security:
+      - Bearer: {}
+      parameters: []
+      responses:
+        '201':
+          description: updated contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target_id:
+                  type: integer
+                  description: Target User ID
+                _otp_code:
+                  type: string
+                  description: OTP Code
+                tags_attributes:
+                  type: object
+                  nullable: true
+                  properties:
+                    id:
+                      type: integer
+                      description: Tag ID
+                      nullable: true
+                    value:
+                      type: string
+                      description: Tag Value
+                    _destroy:
+                      type: boolean
+                      description: Delete?
+                      nullable: true
+    get:
+      summary: List friendship
+      security:
+      - Bearer: {}
+      parameters:
+      - name: tag
+        in: query
+        nullable: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        nullable: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: list friendships
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    user_id:
+                      type: integer
+                      description: User ID
+                    target_id:
+                      type: integer
+                      description: Target User ID
+                    created_at:
+                      type: string
+                      format: date_time
+                    updated_at:
+                      type: string
+                      format: date_time
+                    target:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date_time
+                        updated_at:
+                          type: string
+                          format: date_time
+                        avatar_url:
+                          type: string
+                          format: uri
+                          nullable: true
+                        user_contacts:
+                          type: array
+                          items:
+                            properties:
+                              id:
+                                type: integer
+                                description: User Contact ID
+                              contact_type:
+                                type: string
+                                description: Contact Type
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                              contact:
+                                type: object
+                                anyOf:
+                                - type: object
+                                  description: WhatsApp Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    phone_number:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                                - type: object
+                                  description: Telegram Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    username:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                                - type: object
+                                  description: Address Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    address:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                      required:
+                      - name
+                      - created_at
+                      - updated_at
+  "/friendships/{id}":
+    get:
+      summary: Show friendship
+      security:
+      - Bearer: {}
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: get friendship
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  properties:
+                    user_id:
+                      type: integer
+                      description: User ID
+                    target_id:
+                      type: integer
+                      description: Target User ID
+                    created_at:
+                      type: string
+                      format: date_time
+                    updated_at:
+                      type: string
+                      format: date_time
+                    target:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date_time
+                        updated_at:
+                          type: string
+                          format: date_time
+                        avatar_url:
+                          type: string
+                          format: uri
+                          nullable: true
+                        user_contacts:
+                          type: array
+                          items:
+                            properties:
+                              id:
+                                type: integer
+                                description: User Contact ID
+                              contact_type:
+                                type: string
+                                description: Contact Type
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                              contact:
+                                type: object
+                                anyOf:
+                                - type: object
+                                  description: WhatsApp Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    phone_number:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                                - type: object
+                                  description: Telegram Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    username:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                                - type: object
+                                  description: Address Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    address:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                      required:
+                      - name
+                      - created_at
+                      - updated_at
+    put:
+      summary: Update friendship
+      security:
+      - Bearer: {}
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: updated friendship
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  properties:
+                    user_id:
+                      type: integer
+                      description: User ID
+                    target_id:
+                      type: integer
+                      description: Target User ID
+                    created_at:
+                      type: string
+                      format: date_time
+                    updated_at:
+                      type: string
+                      format: date_time
+                    target:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date_time
+                        updated_at:
+                          type: string
+                          format: date_time
+                        avatar_url:
+                          type: string
+                          format: uri
+                          nullable: true
+                        user_contacts:
+                          type: array
+                          items:
+                            properties:
+                              id:
+                                type: integer
+                                description: User Contact ID
+                              contact_type:
+                                type: string
+                                description: Contact Type
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                              contact:
+                                type: object
+                                anyOf:
+                                - type: object
+                                  description: WhatsApp Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    phone_number:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                                - type: object
+                                  description: Telegram Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    username:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                                - type: object
+                                  description: Address Contact
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Contact ID
+                                    address:
+                                      type: string
+                                    created_at:
+                                      type: string
+                                      format: date_time
+                                    updated_at:
+                                      type: string
+                                      format: date_time
+                      required:
+                      - name
+                      - created_at
+                      - updated_at
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tags_attributes:
+                  type: object
+                  nullable: true
+                  properties:
+                    id:
+                      type: integer
+                      description: Tag ID
+                      nullable: true
+                    value:
+                      type: string
+                      description: Tag Value
+                    _destroy:
+                      type: boolean
+                      description: Delete?
+                      nullable: true
+    delete:
+      summary: Delete friendship
+      security:
+      - Bearer: {}
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: delete friendship
   "/sign_up":
     post:
       summary: Sign up
@@ -29,6 +491,69 @@ paths:
                     nullable: true
                   secret:
                     type: string
+                  otp_code:
+                    type: string
+                  user_contacts:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          description: User Contact ID
+                        contact_type:
+                          type: string
+                          description: Contact Type
+                        created_at:
+                          type: string
+                          format: date_time
+                        updated_at:
+                          type: string
+                          format: date_time
+                        contact:
+                          type: object
+                          anyOf:
+                          - type: object
+                            description: WhatsApp Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              phone_number:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                          - type: object
+                            description: Telegram Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              username:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                          - type: object
+                            description: Address Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              address:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
                 required:
                 - name
                 - created_at
@@ -46,8 +571,9 @@ paths:
                 _avatar_attributes[file]:
                   type: file
                   description: Avatar File
-              required:
-              - name
+                _avatar_attributes[purge]:
+                  type: boolean
+                  description: Purge Avatar?
   "/sign_in":
     post:
       summary: Sign in
@@ -75,6 +601,69 @@ paths:
                     nullable: true
                   secret:
                     type: string
+                  otp_code:
+                    type: string
+                  user_contacts:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          description: User Contact ID
+                        contact_type:
+                          type: string
+                          description: Contact Type
+                        created_at:
+                          type: string
+                          format: date_time
+                        updated_at:
+                          type: string
+                          format: date_time
+                        contact:
+                          type: object
+                          anyOf:
+                          - type: object
+                            description: WhatsApp Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              phone_number:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                          - type: object
+                            description: Telegram Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              username:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                          - type: object
+                            description: Address Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              address:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
                 required:
                 - name
                 - created_at
@@ -107,6 +696,69 @@ paths:
                     nullable: true
                   secret:
                     type: string
+                  otp_code:
+                    type: string
+                  user_contacts:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          description: User Contact ID
+                        contact_type:
+                          type: string
+                          description: Contact Type
+                        created_at:
+                          type: string
+                          format: date_time
+                        updated_at:
+                          type: string
+                          format: date_time
+                        contact:
+                          type: object
+                          anyOf:
+                          - type: object
+                            description: WhatsApp Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              phone_number:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                          - type: object
+                            description: Telegram Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              username:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                          - type: object
+                            description: Address Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              address:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
                 required:
                 - name
                 - created_at
@@ -118,8 +770,95 @@ paths:
       - Bearer: {}
       parameters: []
       responses:
-        '204':
+        '200':
           description: update user info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+                  avatar_url:
+                    type: string
+                    format: uri
+                    nullable: true
+                  secret:
+                    type: string
+                  otp_code:
+                    type: string
+                  user_contacts:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          description: User Contact ID
+                        contact_type:
+                          type: string
+                          description: Contact Type
+                        created_at:
+                          type: string
+                          format: date_time
+                        updated_at:
+                          type: string
+                          format: date_time
+                        contact:
+                          type: object
+                          anyOf:
+                          - type: object
+                            description: WhatsApp Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              phone_number:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                          - type: object
+                            description: Telegram Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              username:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                          - type: object
+                            description: Address Contact
+                            properties:
+                              id:
+                                type: integer
+                                description: Contact ID
+                              address:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date_time
+                              updated_at:
+                                type: string
+                                format: date_time
+                required:
+                - name
+                - created_at
+                - updated_at
+                - secret
       requestBody:
         content:
           multipart/form-data:
