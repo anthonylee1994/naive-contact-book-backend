@@ -38,7 +38,7 @@ paths:
                         nullable: true
                       contact_attributes:
                         type: object
-                        oneOf:
+                        anyOf:
                         - type: object
                           description: WhatsApp Contact
                           properties:

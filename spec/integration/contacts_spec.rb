@@ -24,7 +24,7 @@ describe 'Contacts API' do
                 _destroy: { type: :boolean, description: 'Delete?', nullable: true },
                 contact_attributes: {
                   type: :object,
-                  oneOf: [
+                  anyOf: [
                     {
                       type: :object,
                       description: 'WhatsApp Contact',
