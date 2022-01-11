@@ -8,7 +8,7 @@ paths:
     put:
       summary: Update Contacts
       security:
-      - Bearer: {}
+      - Bearer: []
       parameters: []
       responses:
         '200':
@@ -60,7 +60,7 @@ paths:
     post:
       summary: Create friendship
       security:
-      - Bearer: {}
+      - Bearer: []
       parameters: []
       responses:
         '201':
@@ -95,7 +95,7 @@ paths:
     get:
       summary: List friendship
       security:
-      - Bearer: {}
+      - Bearer: []
       parameters:
       - name: tag
         in: query
@@ -210,7 +210,7 @@ paths:
     get:
       summary: Show friendship
       security:
-      - Bearer: {}
+      - Bearer: []
       parameters:
       - name: id
         in: path
@@ -321,7 +321,7 @@ paths:
     put:
       summary: Update friendship
       security:
-      - Bearer: {}
+      - Bearer: []
       parameters:
       - name: id
         in: path
@@ -453,7 +453,7 @@ paths:
     delete:
       summary: Delete friendship
       security:
-      - Bearer: {}
+      - Bearer: []
       parameters:
       - name: id
         in: path
@@ -576,7 +576,7 @@ paths:
     post:
       summary: Sign in
       security:
-      - Bearer: {}
+      - Bearer: []
       responses:
         '200':
           description: sign in
@@ -671,7 +671,7 @@ paths:
     get:
       summary: Show current user
       security:
-      - Bearer: {}
+      - Bearer: []
       responses:
         '200':
           description: get current user
@@ -765,7 +765,7 @@ paths:
     put:
       summary: Update user
       security:
-      - Bearer: {}
+      - Bearer: []
       parameters: []
       responses:
         '200':
@@ -875,7 +875,7 @@ paths:
     delete:
       summary: Delete current user
       security:
-      - Bearer: {}
+      - Bearer: []
       responses:
         '204':
           description: delete current user

@@ -8,7 +8,7 @@ describe 'Contacts API' do
       consumes 'application/json'
       produces 'application/json'
 
-      security [Bearer: {}]
+      security [Bearer: []]
 
       parameter name: :data, in: :body, schema: {
         type: :object,

@@ -119,7 +119,7 @@ describe 'Users API' do
     post 'Sign in' do
       json_request
 
-      security [Bearer: {}]
+      security [Bearer: []]
 
       response '200', 'sign in' do
         let(:Authorization) do
@@ -142,7 +142,7 @@ describe 'Users API' do
     get 'Show current user' do
       json_request
 
-      security [Bearer: {}]
+      security [Bearer: []]
 
       response '200', 'get current user' do
         let(:Authorization) do
@@ -163,7 +163,7 @@ describe 'Users API' do
     put 'Update user' do
       multipart_request
 
-      security [Bearer: {}]
+      security [Bearer: []]
       user_parameters
 
       response '200', 'update user info' do
@@ -184,7 +184,7 @@ describe 'Users API' do
     put 'Add user avatar' do
       multipart_request
 
-      security [Bearer: {}]
+      security [Bearer: []]
 
       user_parameters
 
@@ -204,7 +204,7 @@ describe 'Users API' do
     put 'Update user avatar' do
       multipart_request
 
-      security [Bearer: {}]
+      security [Bearer: []]
 
       user_parameters
 
@@ -229,7 +229,7 @@ describe 'Users API' do
     put 'Delete user avatar' do
       multipart_request
 
-      security [Bearer: {}]
+      security [Bearer: []]
 
       user_parameters
 
@@ -254,7 +254,7 @@ describe 'Users API' do
     delete 'Delete current user' do
       json_request
 
-      security [Bearer: {}]
+      security [Bearer: []]
 
       response '204', 'delete current user' do
         let(:Authorization) do

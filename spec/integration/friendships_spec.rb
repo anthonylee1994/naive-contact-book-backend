@@ -155,7 +155,7 @@ describe 'Friendship API' do
     post 'Create friendship' do
       consumes 'application/json'
       produces 'application/json'
-      security [Bearer: {}]
+      security [Bearer: []]
 
       friendship_create_parameters
 
@@ -173,7 +173,7 @@ describe 'Friendship API' do
     get 'List friendship' do
       consumes 'application/json'
       produces 'application/json'
-      security [Bearer: {}]
+      security [Bearer: []]
 
       parameter name: :tag, in: :query, type: :string
       parameter name: :name, in: :query, type: :string
@@ -202,7 +202,7 @@ describe 'Friendship API' do
     get 'Show friendship' do
       consumes 'application/json'
       produces 'application/json'
-      security [Bearer: {}]
+      security [Bearer: []]
 
       parameter name: :id, in: :path, type: :integer
 
@@ -218,7 +218,7 @@ describe 'Friendship API' do
     put 'Update friendship' do
       consumes 'application/json'
       produces 'application/json'
-      security [Bearer: {}]
+      security [Bearer: []]
 
       friendship_update_parameters
 
@@ -246,7 +246,7 @@ describe 'Friendship API' do
     delete 'Delete friendship' do
       consumes 'application/json'
       produces 'application/json'
-      security [Bearer: {}]
+      security [Bearer: []]
 
       parameter name: :id, in: :path, type: :integer
 
