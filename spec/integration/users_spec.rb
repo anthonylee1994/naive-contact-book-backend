@@ -12,6 +12,7 @@ def user_response_schema
            user_contacts: {
              type: :array,
              items: {
+               type: :object,
                properties: {
                  id: { type: :integer, description: 'User Contact ID' },
                  contact_type: { type: :string, description: 'Contact Type' },
@@ -19,38 +20,14 @@ def user_response_schema
                  updated_at: { type: :string, format: :date_time },
                  contact: {
                    type: :object,
-                   anyOf: [
-                     {
-                       type: :object,
-                       description: 'WhatsApp Contact',
-                       properties: {
-                         id: { type: :integer, description: 'Contact ID' },
-                         phone_number: { type: :string },
-                         created_at: { type: :string, format: :date_time },
-                         updated_at: { type: :string, format: :date_time }
-                       }
-                     },
-                     {
-                       type: :object,
-                       description: 'Telegram Contact',
-                       properties: {
-                         id: { type: :integer, description: 'Contact ID' },
-                         username: { type: :string },
-                         created_at: { type: :string, format: :date_time },
-                         updated_at: { type: :string, format: :date_time }
-                       }
-                     },
-                     {
-                       type: :object,
-                       description: 'Address Contact',
-                       properties: {
-                         id: { type: :integer, description: 'Contact ID' },
-                         address: { type: :string },
-                         created_at: { type: :string, format: :date_time },
-                         updated_at: { type: :string, format: :date_time }
-                       }
-                     }
-                   ]
+                   properties: {
+                     id: { type: :integer, description: 'Contact ID' },
+                     phone_number: { type: :string, nullable: true },
+                     username: { type: :string, nullable: true },
+                     address: { type: :string, nullable: true },
+                     created_at: { type: :string, format: :date_time },
+                     updated_at: { type: :string, format: :date_time }
+                   }
                  }
                }
              }

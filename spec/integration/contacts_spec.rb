@@ -18,35 +18,18 @@ describe 'Contacts API' do
             type: :array,
             description: 'User Contact',
             items: {
+              type: :object,
               properties: {
                 id: { type: :integer, description: 'User Contact ID', nullable: true },
                 contact_type: { type: :string, description: 'Contact Type' },
                 _destroy: { type: :boolean, description: 'Delete?', nullable: true },
                 contact_attributes: {
                   type: :object,
-                  anyOf: [
-                    {
-                      type: :object,
-                      description: 'WhatsApp Contact',
-                      properties: {
-                        phone_number: { type: :string }
-                      }
-                    },
-                    {
-                      type: :object,
-                      description: 'Telegram Contact',
-                      properties: {
-                        username: { type: :string }
-                      }
-                    },
-                    {
-                      type: :object,
-                      description: 'Address Contact',
-                      properties: {
-                        address: { type: :string }
-                      }
-                    }
-                  ]
+                  properties: {
+                    phone_number: { type: :string, nullable: true },
+                    username: { type: :string, nullable: true },
+                    address: { type: :string, nullable: true }
+                  }
                 }
               }
             }
