@@ -13,14 +13,10 @@ paths:
           description: user created
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-              required:
-              - name
+              type: string
+        required: true
   "/sign_in":
     post:
       summary: Sign in
@@ -47,14 +43,9 @@ paths:
           description: update user info
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-              required:
-              - name
+              type: string
     delete:
       summary: Delete current user
       security:

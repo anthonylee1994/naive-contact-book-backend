@@ -6,33 +6,30 @@ describe 'Users API' do
 
   path '/sign_up' do
     post 'Sign up' do
-      consumes 'application/json'
+      consumes 'multipart/form-data'
 
-      parameter name: :user, in: :body, schema: {
-        type: :object,
-        properties: {
-          name: { type: :string }
-        },
-        required: %w[name]
-      }
+      parameter name: :name, in: :formData, type: :string, required: true
+      parameter name: :'_avatar_attributes[file]', in: :formData, type: :file, required: false
 
       response '201', 'user created' do
-        let(:user) { { name: 'Anthony' } }
+        let(:name) { 'Anthony' }
+        let(:'_avatar_attributes[file]') { avatar_image }
 
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data['name']).to eq 'Anthony'
           expect(data['secret']).not_to be_nil
+          expect(data['avatar_url']).not_to be_nil
         end
       end
 
       response '422', 'user should create with name', document: false do
-        let(:user) { {} }
+        let(:name) { nil }
         run_test!
       end
 
       response '422', 'user should create with non-blank name', document: false do
-        let(:user) { { name: '' } }
+        let(:name) { '' }
         run_test!
       end
     end
@@ -76,23 +73,19 @@ describe 'Users API' do
     end
 
     put 'Update user' do
-      consumes 'application/json'
+      consumes 'multipart/form-data'
       security [Bearer: {}]
 
-      parameter name: :user_info, in: :body, schema: {
-        type: :object,
-        properties: {
-          name: { type: :string }
-        },
-        required: %w[name]
-      }
+      parameter name: :name, in: :formData, type: :string, required: false
+      parameter name: :'_avatar_attributes[file]', in: :formData, type: :file, required: false
+      parameter name: :'_avatar_attributes[purge]', in: :formData, type: :boolean, required: false
 
       response '204', 'update user info' do
         let(:Authorization) do
           "Bearer #{anthony.secret}"
         end
 
-        let(:user_info) { { name: 'Tom' } }
+        let(:name) { 'Tom' }
 
         run_test! do |_response|
           expect(anthony.reload.name).to eq 'Tom'
@@ -106,7 +99,7 @@ describe 'Users API' do
 
       parameter name: :'_avatar_attributes[file]', in: :formData, type: :file
 
-      response '204', 'update user info' do
+      response '204', 'update user info', document: false do
         let(:Authorization) do
           "Bearer #{anthony.secret}"
         end
@@ -125,7 +118,7 @@ describe 'Users API' do
 
       parameter name: :'_avatar_attributes[file]', in: :formData, type: :file
 
-      response '204', 'update user info' do
+      response '204', 'update user info', document: false do
         let(:user) do
           anthony.update!(_avatar_attributes: { 'file' => fixture_file_upload('xxx.jpg', 'image/jpeg') })
           anthony
@@ -149,7 +142,7 @@ describe 'Users API' do
 
       parameter name: :'_avatar_attributes[purge]', in: :formData, type: :boolean
 
-      response '204', 'update user info' do
+      response '204', 'update user info', document: false do
         let(:user) do
           anthony.update!(_avatar_attributes: { 'file' => fixture_file_upload('xxx.jpg', 'image/jpeg') })
           anthony

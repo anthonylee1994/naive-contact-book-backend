@@ -7,7 +7,6 @@
 #  secret     :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  r          :float
 #
 # Indexes
 #

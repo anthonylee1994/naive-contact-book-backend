@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created
+      render json: @user, status: :created, show_secret: true
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -14,12 +14,12 @@ class UsersController < ApplicationController
 
   # POST /sign_in
   def sign_in
-    render json: current_user
+    render json: current_user, show_secret: true
   end
 
   # GET /me
   def show
-    render json: current_user
+    render json: current_user, show_secret: true
   end
 
   # # PATCH/PUT /users/1

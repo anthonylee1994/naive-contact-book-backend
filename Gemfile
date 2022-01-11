@@ -36,6 +36,7 @@ gem 'image_processing', '~> 1.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers.git', branch: '0-10-stable'
 gem 'annotate', '~> 2.6'
 gem 'aws-sdk-s3', '~> 1.111'
 gem 'pry-rails', '~> 0.3.9'
