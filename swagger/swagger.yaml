@@ -99,12 +99,10 @@ paths:
       parameters:
       - name: tag
         in: query
-        nullable: true
         schema:
           type: string
       - name: name
         in: query
-        nullable: true
         schema:
           type: string
       responses:

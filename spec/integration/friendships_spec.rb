@@ -175,8 +175,8 @@ describe 'Friendship API' do
       produces 'application/json'
       security [Bearer: {}]
 
-      parameter name: :tag, in: :query, type: :string, nullable: true
-      parameter name: :name, in: :query, type: :string, nullable: true
+      parameter name: :tag, in: :query, type: :string
+      parameter name: :name, in: :query, type: :string
 
       response '200', 'list friendships' do
         let(:Authorization) { "Bearer #{alice.secret}" }
