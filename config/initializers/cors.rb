@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins ['localhost:8000', 'naive-contact-book.herokuapp.com']
+    origins ['localhost:8000', 'localhost:3000', 'naive-contact-book.herokuapp.com']
 
     resource '*',
              headers: :any,
