@@ -9,8 +9,4 @@ class UserSerializer < ActiveModel::Serializer
   def avatar_url
     object.avatar.url
   end
-
-  def otp_code
-    object.otp_code(time: Time.now + 3600)
-  end
 end

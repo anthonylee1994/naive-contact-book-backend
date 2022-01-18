@@ -3,6 +3,7 @@ require 'swagger_helper'
 def user_response_schema
   schema type: :object,
          properties: {
+           id: { type: :integer },
            name: { type: :string },
            created_at: { type: :string, format: :date_time },
            updated_at: { type: :string, format: :date_time },
@@ -15,6 +16,7 @@ def user_response_schema
                type: :object,
                properties: {
                  id: { type: :integer, description: 'User Contact ID' },
+                 display_order: { type: :integer, description: 'Display Order' },
                  contact_type: { type: :string, description: 'Contact Type' },
                  created_at: { type: :string, format: :date_time },
                  updated_at: { type: :string, format: :date_time },

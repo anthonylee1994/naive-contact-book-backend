@@ -6,12 +6,13 @@ class FriendshipsController < ApplicationController
     @friendships = current_user.friendships
 
     q = {}
-    q[:tags_value_cont] = params[:tags_value_cont] if params[:tag].present?
+    q[:tags_value_cont] = params[:tag] if params[:tag].present?
     q[:target_name_cont] = params[:name] if params[:name].present?
 
     @friendships = @friendships.ransack(q).result if q.present?
 
-    render json: @friendships.includes(target: [user_contacts: [:contact]]), include: '*.*.*.*'
+    render json: @friendships.includes(:tags, target: [user_contacts: [:contact], avatar_attachment: :blob]),
+           include: '*.*.*.*'
   end
 
   # GET /friendships/1

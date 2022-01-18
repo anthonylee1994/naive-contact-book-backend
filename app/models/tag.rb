@@ -15,4 +15,6 @@
 
 class Tag < ApplicationRecord
   belongs_to :friendship
+
+  validates :value, presence: true, allow_blank: false
 end

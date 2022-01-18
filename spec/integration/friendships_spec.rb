@@ -46,6 +46,7 @@ def user_response_schema
   {
     type: :object,
     properties: {
+      id: { type: :integer },
       name: { type: :string },
       created_at: { type: :string, format: :date_time },
       updated_at: { type: :string, format: :date_time },
@@ -56,6 +57,7 @@ def user_response_schema
           type: :object,
           properties: {
             id: { type: :integer, description: 'User Contact ID' },
+            display_order: { type: :integer, description: 'Display Order' },
             contact_type: { type: :string, description: 'Contact Type' },
             created_at: { type: :string, format: :date_time },
             updated_at: { type: :string, format: :date_time },
@@ -82,10 +84,23 @@ def friendship_response_schema
   {
     type: :object,
     properties: {
+      id: { type: :integer },
       user_id: { type: :integer, description: 'User ID' },
       target_id: { type: :integer, description: 'Target User ID' },
       created_at: { type: :string, format: :date_time },
       updated_at: { type: :string, format: :date_time },
+      tags: {
+        type: :array,
+        items: {
+          type: :object,
+          properties: {
+            id: { type: :integer, description: 'Tag ID' },
+            value: { type: :string, description: 'Tag Value' },
+            created_at: { type: :string, format: :date_time },
+            updated_at: { type: :string, format: :date_time }
+          }
+        }
+      },
       target: user_response_schema
     }
   }
@@ -97,7 +112,7 @@ def list_friendship_response_schema
 end
 
 def show_friendship_response_schema
-  schema({ type: :object }.merge(items: friendship_response_schema))
+  schema friendship_response_schema
 end
 
 describe 'Friendship API' do

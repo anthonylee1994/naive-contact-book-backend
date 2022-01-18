@@ -6,6 +6,7 @@ class ApplicationController < ActionController::API
 
   def init_params
     # hacky way to solve the problem of RSWAG only recognize multipart/form-data params[:data] in test env
-    self.params = Rails.env.test? ? (params[:data] || params) : params
+
+    self.params = (params[:data] || params)
   end
 end

@@ -111,6 +111,8 @@ paths:
                 items:
                   type: object
                   properties:
+                    id:
+                      type: integer
                     user_id:
                       type: integer
                       description: User ID
@@ -123,9 +125,28 @@ paths:
                     updated_at:
                       type: string
                       format: date_time
+                    tags:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: Tag ID
+                          value:
+                            type: string
+                            description: Tag Value
+                          created_at:
+                            type: string
+                            format: date_time
+                          updated_at:
+                            type: string
+                            format: date_time
                     target:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         name:
                           type: string
                         created_at:
@@ -146,6 +167,9 @@ paths:
                               id:
                                 type: integer
                                 description: User Contact ID
+                              display_order:
+                                type: integer
+                                description: Display Order
                               contact_type:
                                 type: string
                                 description: Contact Type
@@ -198,78 +222,100 @@ paths:
             application/json:
               schema:
                 type: object
-                items:
-                  type: object
-                  properties:
-                    user_id:
-                      type: integer
-                      description: User ID
-                    target_id:
-                      type: integer
-                      description: Target User ID
-                    created_at:
-                      type: string
-                      format: date_time
-                    updated_at:
-                      type: string
-                      format: date_time
-                    target:
+                properties:
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+                    description: User ID
+                  target_id:
+                    type: integer
+                    description: Target User ID
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+                  tags:
+                    type: array
+                    items:
                       type: object
                       properties:
-                        name:
+                        id:
+                          type: integer
+                          description: Tag ID
+                        value:
                           type: string
+                          description: Tag Value
                         created_at:
                           type: string
                           format: date_time
                         updated_at:
                           type: string
                           format: date_time
-                        avatar_url:
-                          type: string
-                          format: uri
-                          nullable: true
-                        user_contacts:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                description: User Contact ID
-                              contact_type:
-                                type: string
-                                description: Contact Type
-                              created_at:
-                                type: string
-                                format: date_time
-                              updated_at:
-                                type: string
-                                format: date_time
-                              contact:
-                                type: object
-                                properties:
-                                  id:
-                                    type: integer
-                                    description: Contact ID
-                                  phone_number:
-                                    type: string
-                                    nullable: true
-                                  username:
-                                    type: string
-                                    nullable: true
-                                  address:
-                                    type: string
-                                    nullable: true
-                                  created_at:
-                                    type: string
-                                    format: date_time
-                                  updated_at:
-                                    type: string
-                                    format: date_time
-                      required:
-                      - name
-                      - created_at
-                      - updated_at
+                  target:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date_time
+                      updated_at:
+                        type: string
+                        format: date_time
+                      avatar_url:
+                        type: string
+                        format: uri
+                        nullable: true
+                      user_contacts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: User Contact ID
+                            display_order:
+                              type: integer
+                              description: Display Order
+                            contact_type:
+                              type: string
+                              description: Contact Type
+                            created_at:
+                              type: string
+                              format: date_time
+                            updated_at:
+                              type: string
+                              format: date_time
+                            contact:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  description: Contact ID
+                                phone_number:
+                                  type: string
+                                  nullable: true
+                                username:
+                                  type: string
+                                  nullable: true
+                                address:
+                                  type: string
+                                  nullable: true
+                                created_at:
+                                  type: string
+                                  format: date_time
+                                updated_at:
+                                  type: string
+                                  format: date_time
+                    required:
+                    - name
+                    - created_at
+                    - updated_at
     put:
       summary: Update friendship
       security:
@@ -287,78 +333,100 @@ paths:
             application/json:
               schema:
                 type: object
-                items:
-                  type: object
-                  properties:
-                    user_id:
-                      type: integer
-                      description: User ID
-                    target_id:
-                      type: integer
-                      description: Target User ID
-                    created_at:
-                      type: string
-                      format: date_time
-                    updated_at:
-                      type: string
-                      format: date_time
-                    target:
+                properties:
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+                    description: User ID
+                  target_id:
+                    type: integer
+                    description: Target User ID
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+                  tags:
+                    type: array
+                    items:
                       type: object
                       properties:
-                        name:
+                        id:
+                          type: integer
+                          description: Tag ID
+                        value:
                           type: string
+                          description: Tag Value
                         created_at:
                           type: string
                           format: date_time
                         updated_at:
                           type: string
                           format: date_time
-                        avatar_url:
-                          type: string
-                          format: uri
-                          nullable: true
-                        user_contacts:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                description: User Contact ID
-                              contact_type:
-                                type: string
-                                description: Contact Type
-                              created_at:
-                                type: string
-                                format: date_time
-                              updated_at:
-                                type: string
-                                format: date_time
-                              contact:
-                                type: object
-                                properties:
-                                  id:
-                                    type: integer
-                                    description: Contact ID
-                                  phone_number:
-                                    type: string
-                                    nullable: true
-                                  username:
-                                    type: string
-                                    nullable: true
-                                  address:
-                                    type: string
-                                    nullable: true
-                                  created_at:
-                                    type: string
-                                    format: date_time
-                                  updated_at:
-                                    type: string
-                                    format: date_time
-                      required:
-                      - name
-                      - created_at
-                      - updated_at
+                  target:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date_time
+                      updated_at:
+                        type: string
+                        format: date_time
+                      avatar_url:
+                        type: string
+                        format: uri
+                        nullable: true
+                      user_contacts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: User Contact ID
+                            display_order:
+                              type: integer
+                              description: Display Order
+                            contact_type:
+                              type: string
+                              description: Contact Type
+                            created_at:
+                              type: string
+                              format: date_time
+                            updated_at:
+                              type: string
+                              format: date_time
+                            contact:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  description: Contact ID
+                                phone_number:
+                                  type: string
+                                  nullable: true
+                                username:
+                                  type: string
+                                  nullable: true
+                                address:
+                                  type: string
+                                  nullable: true
+                                created_at:
+                                  type: string
+                                  format: date_time
+                                updated_at:
+                                  type: string
+                                  format: date_time
+                    required:
+                    - name
+                    - created_at
+                    - updated_at
       requestBody:
         content:
           application/json:
@@ -406,6 +474,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   name:
                     type: string
                   created_at:
@@ -430,6 +500,9 @@ paths:
                         id:
                           type: integer
                           description: User Contact ID
+                        display_order:
+                          type: integer
+                          description: Display Order
                         contact_type:
                           type: string
                           description: Contact Type
@@ -493,6 +566,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   name:
                     type: string
                   created_at:
@@ -517,6 +592,9 @@ paths:
                         id:
                           type: integer
                           description: User Contact ID
+                        display_order:
+                          type: integer
+                          description: Display Order
                         contact_type:
                           type: string
                           description: Contact Type
@@ -565,6 +643,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   name:
                     type: string
                   created_at:
@@ -589,6 +669,9 @@ paths:
                         id:
                           type: integer
                           description: User Contact ID
+                        display_order:
+                          type: integer
+                          description: Display Order
                         contact_type:
                           type: string
                           description: Contact Type
@@ -637,6 +720,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   name:
                     type: string
                   created_at:
@@ -661,6 +746,9 @@ paths:
                         id:
                           type: integer
                           description: User Contact ID
+                        display_order:
+                          type: integer
+                          description: Display Order
                         contact_type:
                           type: string
                           description: Contact Type

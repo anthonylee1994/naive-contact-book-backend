@@ -27,12 +27,18 @@ class Friendship < ApplicationRecord
   validates :user_id, uniqueness: { scope: :target_id }
 
   validate :valid_otp_code, on: :create
+  validate :no_self, on: :create
 
   after_create :create_inverse_relationship, unless: -> { target.friends.include?(user) }
   after_destroy :destroy_inverse_relationship, if: -> { target.friends.include?(user) }
 
   def valid_otp_code
+    puts _otp_code
     errors.add(:base, 'invalid_otp') unless target.authenticate_otp(_otp_code, drift: 60)
+  end
+
+  def no_self
+    errors.add(:base, 'no_self') unless target != user
   end
 
   def create_inverse_relationship
